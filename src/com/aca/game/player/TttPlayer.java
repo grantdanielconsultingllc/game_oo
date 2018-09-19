@@ -30,5 +30,11 @@ public class TttPlayer extends Player {
 		name = name + "[" + marker.toString() + "]";
 		return name;
 	}
+
+	@Override
+	public void displayTotals() {
+		System.out.println("finish mee....");
+		
+	}
 	
 }

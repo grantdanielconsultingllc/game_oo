@@ -7,6 +7,7 @@ import com.aca.game.rules.GuessRules;
 public class GuessGame extends Game {
 
 	private GuessPlayer myPlayer = new GuessPlayer();
+	int randomNumber = 0;
 	
 	public static void main(String[] args) {		
 		Game myGame = new GuessGame();
@@ -24,19 +25,24 @@ public class GuessGame extends Game {
 		
 		do {
 			myPlayer.startNewGame();
-			int randomNumber = GuessRules.getRandomNumber();
+			randomNumber = GuessRules.getRandomNumber();
 			
 			do {
 
 				myPlayer.setGuess(GuessRules.getGuessFromUser());
-				GuessRules.checkGuess(randomNumber, myPlayer);	//TODO this is not returning a value, seems odd		
+				GuessRules.displayGuessResult(randomNumber, myPlayer);	//TODO this is not returning a value, seems odd		
 
-			} while(randomNumber != myPlayer.getGuess());		//TODO why are we checking if guess == random-number again?	
+			} while(isGameOver());		//TODO why are we checking if guess == random-number again?	
 			
 		} while (GuessRules.playAgain());
 		
 		myPlayer.displayTotals(); 
 		
 	}	
+	
+	private boolean isGameOver() {
+		boolean gameOver = randomNumber != myPlayer.getGuess();
+		return gameOver;
+	}
 
 }

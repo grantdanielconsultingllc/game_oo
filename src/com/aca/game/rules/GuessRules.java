@@ -22,46 +22,61 @@ public class GuessRules extends Rules {
     public static int getGuessFromUser()
     {
         Integer userInt = null;
-
+        boolean isValid = false;
+        String userInput = null;
+        
         do
         {
             System.out.print("Guess my secret number: ");
-            String userInput = getUserInput();
+            userInput = getUserInput();
 
-            userInt = validateGuess(userInput);
+            isValid = validateGuess2(userInput);            
 
-        } while (userInt == null);  //TODO not very readable
+        } while (!isValid);  //TODO not very readable
+        
+        userInt = convertGuessToInt(userInput);
 
         return userInt;
     }
     
-    /**
-     * Determine if the user input is a valid guess.  It must be an integer within the range.
-     * @param userInput
-     * @return an Integer containing the user's input. Return null if not valid.
-     */
-    //TODO refactor to use a regular expression to validate input / remove try/catch
-    //TODO this method does too many things - validates and converts to integer.
-    private static Integer validateGuess(String userInput) {
+    private static Integer convertGuessToInt(String userInput) {
     	Integer userInputInt = null;
     	try
          {
+    		userInputInt = Integer.parseInt(userInput);            
+         }
+         catch(Exception e)
+         {                      
+         }
+    	
+    	return userInputInt;  
+	}
+    
+    private static boolean validateGuess2(String userInput) {
+    	boolean isValid = true;
+    	Integer userInputInt = null;
+    	try
+         {
+    		
+//    		boolean isGood = userInput.matches("^[1-9][0-9]$");
+    		
     		userInputInt = Integer.parseInt(userInput);
              if (userInputInt < LOWEST_NUMBER || userInputInt > HIGHEST_NUMBER) {
              	System.out.println("I'm sorry. I can't accept that number, number is out of range. Try again.");
-             	userInputInt = null;
+             	isValid = false;
              }
          }
          catch(Exception e)
          {
-             System.out.println("I'm sorry. I can't accept that as an integer. Try again.");            
+             System.out.println("I'm sorry. I can't accept that as an integer. Try again.");  
+             isValid = false;
          }
     	
-    	return userInputInt;  //Return null if not valid? not very intuitive
+    	return isValid;  
     }
     
     //TODO is this a good method name?
-    public static void checkGuess(int randomNumber, GuessPlayer player) {
+    public static void displayGuessResult(int randomNumber, GuessPlayer player) {
     	String tooCold = "";
     	
     	int absoluteDiff = Math.abs(player.getGuess() - randomNumber);
